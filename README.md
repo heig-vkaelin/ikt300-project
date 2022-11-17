@@ -1,1 +1,1 @@
-# ikt214-project
+# IKT300 - Engineering Units Converter
