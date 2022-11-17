@@ -1,0 +1,13 @@
+-- CreateTable
+CREATE TABLE "QuantityType" (
+    "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    "name" TEXT NOT NULL
+);
+
+-- CreateTable
+CREATE TABLE "Unit" (
+    "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    "name" TEXT NOT NULL,
+    "typeId" INTEGER NOT NULL,
+    CONSTRAINT "Unit_typeId_fkey" FOREIGN KEY ("typeId") REFERENCES "QuantityType" ("id") ON DELETE RESTRICT ON UPDATE CASCADE
+);
