@@ -4,19 +4,21 @@ import ConversionParameters from '../database/ConversionParameters';
 import IParser from './IParser';
 import got from 'got';
 import { XMLParser } from 'fast-xml-parser';
+import { XMLUnit, XMLUnitSchema } from '../validator/XMLUnitValidator';
+import QuantityType from '../database/QuantityType';
 
 class ParseXML implements IParser {
-  private getFactors(unit: any): ConversionParameters {
+  private getFactors(unit: XMLUnit): ConversionParameters {
     let a = 0,
       b = 0,
       c = 0,
       d = 0;
 
     if (unit.ConversionToBaseUnit.Fraction) {
-      b = unit.ConversionToBaseUnit.Fraction.Numerator;
-      c = unit.ConversionToBaseUnit.Fraction.Denominator;
+      b = parseFloat(unit.ConversionToBaseUnit.Fraction.Numerator.toString());
+      c = parseFloat(unit.ConversionToBaseUnit.Fraction.Denominator.toString());
     } else if (unit.ConversionToBaseUnit.Factor) {
-      b = unit.ConversionToBaseUnit.Factor;
+      b = parseFloat(unit.ConversionToBaseUnit.Factor.toString());
       c = 1;
     } else if (unit.ConversionToBaseUnit.Formula) {
       a = unit.ConversionToBaseUnit.Formula.A;
@@ -27,6 +29,8 @@ class ParseXML implements IParser {
 
     return new ConversionParameters(a, b, c, d);
   }
+
+  private parseCustomaryUnit() {}
 
   public async parse(input: string): Promise<IUnit[]> {
     const { body } = await got.get(input);
@@ -39,15 +43,28 @@ class ParseXML implements IParser {
     const data = parser.parse(body);
 
     const result: IUnit[] = [];
-
-    for (const unit of data.UnitOfMeasureDictionary.UnitsDefinition.UnitOfMeasure) {
-      if (unit.BaseUnit !== undefined) {
+    for (const rawUnit of data.UnitOfMeasureDictionary.UnitsDefinition.UnitOfMeasure) {
+      if (rawUnit.BaseUnit !== undefined) {
         // TODO: base unit and not customary unit
+        // console.log(unit);
       } else {
+        const validation = XMLUnitSchema.safeParse(rawUnit);
+        if (validation.success === false) {
+          console.error('Error in parsing unit', rawUnit);
+          console.error(validation.error);
+          continue;
+        }
+        const { data: unit } = validation;
+
+        const types = unit.QuantityType ?? [];
+        const quantityTypes = (Array.isArray(types) ? types : [types]).map(
+          (type) => new QuantityType(type),
+        );
+
         const factors = this.getFactors(unit);
 
         result.push(
-          new CustomaryUnit(unit.Name, unit.QuantityType, unit.CatalogSymbol['#text'], factors),
+          new CustomaryUnit(unit.Name, quantityTypes, unit.CatalogSymbol['#text'], factors),
         );
       }
     }
