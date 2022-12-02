@@ -7,7 +7,7 @@ import { XMLParser } from 'fast-xml-parser';
 import { XMLUnit, XMLUnitSchema } from '../validator/XMLUnitValidator';
 import QuantityType from '../database/QuantityType';
 
-class ParseXML implements IParser {
+class ParserXML implements IParser {
   private getFactors(unit: XMLUnit): ConversionParameters {
     let a = 0,
       b = 0,
@@ -30,7 +30,16 @@ class ParseXML implements IParser {
     return new ConversionParameters(a, b, c, d);
   }
 
-  private parseCustomaryUnit() {}
+  private parseCustomaryUnit(unit: XMLUnit): CustomaryUnit {
+    const types = unit.QuantityType ?? [];
+    const quantityTypes = (Array.isArray(types) ? types : [types]).map(
+      (type) => new QuantityType(type),
+    );
+
+    const factors = this.getFactors(unit);
+
+    return new CustomaryUnit(unit.Name, quantityTypes, unit.CatalogSymbol['#text'], factors);
+  }
 
   public async parse(input: string): Promise<IUnit[]> {
     const { body } = await got.get(input);
@@ -45,27 +54,17 @@ class ParseXML implements IParser {
     const result: IUnit[] = [];
     for (const rawUnit of data.UnitOfMeasureDictionary.UnitsDefinition.UnitOfMeasure) {
       if (rawUnit.BaseUnit !== undefined) {
-        // TODO: base unit and not customary unit
+        // TODO: Base unit
         // console.log(unit);
       } else {
+        // Customary unit
         const validation = XMLUnitSchema.safeParse(rawUnit);
-        if (validation.success === false) {
-          console.error('Error in parsing unit', rawUnit);
-          console.error(validation.error);
+        if (!validation.success) {
+          console.error('Error in parsing unit', rawUnit, validation.error);
           continue;
         }
         const { data: unit } = validation;
-
-        const types = unit.QuantityType ?? [];
-        const quantityTypes = (Array.isArray(types) ? types : [types]).map(
-          (type) => new QuantityType(type),
-        );
-
-        const factors = this.getFactors(unit);
-
-        result.push(
-          new CustomaryUnit(unit.Name, quantityTypes, unit.CatalogSymbol['#text'], factors),
-        );
+        result.push(this.parseCustomaryUnit(unit));
       }
     }
 
@@ -73,4 +72,4 @@ class ParseXML implements IParser {
   }
 }
 
-export default new ParseXML();
+export default new ParserXML();
