@@ -10,10 +10,20 @@ async function deleteAll() {
   await prisma.quantityType.deleteMany();
 }
 
+function findDuplicates(units: CustomaryUnit[]) {
+  const names = units.map((unit) => unit.name);
+  const set = new Set(names);
+  const duplicates = names.filter((item) => !set.delete(item));
+  return duplicates;
+}
+
 async function saveToDB() {
   const units = await ParserXML.parse('http://w3.energistics.org/uom/poscUnits22.xml');
   console.log(units.length + ' units parsed');
   // console.log(units[0]);
+
+  // TODO: what do we do with duplicates?
+  // console.log(findDuplicates(units));
 
   console.log('Saving to db...');
   for (const unit of units) {
@@ -37,9 +47,8 @@ async function saveToDB() {
         },
       })
       .catch((e) => {
-        // TODO: fix this, name of unit is not unique in the XML ??
         console.log('Error while saving unit in db');
-        console.log(e);
+        // console.log(e);
       });
   }
   console.log('Done!');

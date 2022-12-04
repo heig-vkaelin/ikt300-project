@@ -53,8 +53,14 @@ class ParserXML implements IParser {
 
     const result: CustomaryUnit[] = [];
     for (const rawUnit of data.UnitOfMeasureDictionary.UnitsDefinition.UnitOfMeasure) {
+      // Don't parse deprecated units or units without a name
+      if (rawUnit.Deprecated || !rawUnit.Name.length) {
+        console.log('Deprecated + ' + rawUnit.Name);
+        continue;
+      }
+
+      // TODO: Base unit
       if (rawUnit.BaseUnit !== undefined) {
-        // TODO: Base unit
         // console.log(unit);
       } else {
         // Customary unit
