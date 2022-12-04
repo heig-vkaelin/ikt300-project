@@ -1,6 +1,6 @@
-import ConversionParameters from "./ConversionParameters";
-import IUnit from "./IUnit";
-import QuantityType from "./QuantityType";
+import ConversionParameters from './ConversionParameters';
+import IUnit from './IUnit';
+import QuantityType from './QuantityType';
 
 class CustomaryUnit implements IUnit {
   public name: string;
@@ -12,7 +12,7 @@ class CustomaryUnit implements IUnit {
     name: string,
     types: QuantityType[],
     symbol: string,
-    parameters: ConversionParameters
+    parameters: ConversionParameters,
   ) {
     this.name = name;
     this.types = types;
