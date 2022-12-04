@@ -41,7 +41,7 @@ class ParserXML implements IParser {
     return new CustomaryUnit(unit.Name, quantityTypes, unit.CatalogSymbol['#text'], factors);
   }
 
-  public async parse(input: string): Promise<IUnit[]> {
+  public async parse(input: string): Promise<CustomaryUnit[]> {
     const { body } = await got.get(input);
 
     const parser = new XMLParser({
@@ -51,7 +51,7 @@ class ParserXML implements IParser {
     });
     const data = parser.parse(body);
 
-    const result: IUnit[] = [];
+    const result: CustomaryUnit[] = [];
     for (const rawUnit of data.UnitOfMeasureDictionary.UnitsDefinition.UnitOfMeasure) {
       if (rawUnit.BaseUnit !== undefined) {
         // TODO: Base unit

@@ -12,6 +12,7 @@
     "tsx": "^3.12.1"
   },
   "scripts": {
-    "dev": "tsx watch src/main.ts"
+    "dev": "tsx watch src/main.ts",
+    "start": "tsx src/main.ts"
   }
 }

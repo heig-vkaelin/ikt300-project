@@ -17,8 +17,21 @@ model QuantityType {
 }
 
 model Unit {
-  id     Int          @id @default(autoincrement())
-  name   String       @unique
-  type   QuantityType @relation(fields: [typeId], references: [id])
-  typeId Int
+  id     Int            @id @default(autoincrement())
+  name   String         @unique
+  symbol String
+  types  QuantityType[]
+  a      Float
+  b      Float
+  c      Float
+  d      Float
 }
+
+// model QuantityTypeOnUnit {
+//   type   QuantityType @relation(fields: [typeId], references: [id])
+//   typeId Int // relation scalar field (used in the `@relation` attribute above)
+//   unit   Unit         @relation(fields: [unitId], references: [id])
+//   unitId Int // relation scalar field (used in the `@relation` attribute above)
+
+//   @@id([typeId, unitId])
+// }
