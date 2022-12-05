@@ -1,0 +1,15 @@
+@startuml uml-module-diagram
+package "API" {}
+package "Main" {}
+package "Converter" {}
+package "Parser" {}
+package "Validator" {}
+package "Database" {}
+
+API --> Converter
+Converter --> Database
+Main --> Database
+Main --> Parser
+Parser --> Validator
+
+@enduml

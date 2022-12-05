@@ -1,0 +1,25 @@
+@startuml uml-class-converter
+
+package "Converter" {
+  class Converter {
+    + convertValue(unitA: string, unitB: string, value: number)
+  }
+}
+
+package "Domain" {
+  interface IUnit {
+    name: string
+    types: QuantityType[]
+    symbol: string
+    + convertToBase(value: number): number
+    + convertFromBase(value: number): number
+  }
+  class UnitFactory {
+    {static} loadUnit(name: string): IUnit
+  }
+}
+
+Converter --> IUnit
+Converter --> UnitFactory
+
+@enduml

@@ -1,0 +1,41 @@
+@startuml uml-class-domain
+
+package "Domain" {
+  interface IUnit {
+    + name: string
+    + types: QuantityType[]
+    + symbol: string
+    + convertToBase(value: number): number
+    + convertFromBase(value: number): number
+  }
+  class UnitFactory {
+    + {static} loadUnit(name: string): IUnit
+  }
+  class ConversionParameter {
+      + A: number
+      + B: number
+      + C: number
+      + D: number
+  }
+
+  class BaseUnit {
+      + description: string
+  }
+
+  class CustomaryUnit {
+      + baseUnit: BaseUnit
+      + conversionParameter: ConversionParameter
+  }
+  class QuantityType {
+      + name: string
+  }
+}
+
+BaseUnit -UP-|> IUnit
+CustomaryUnit -UP-|> IUnit
+CustomaryUnit "*" --> "1" BaseUnit
+CustomaryUnit "*" --* "1" ConversionParameter
+IUnit "*" -RIGHT-> "*" QuantityType
+UnitFactory --> IUnit
+
+@enduml
