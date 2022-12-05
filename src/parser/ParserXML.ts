@@ -40,7 +40,7 @@ class ParserXML implements IParser {
     const quantityTypes = (Array.isArray(types) ? types : [types]).map(
       (type) => new QuantityType(type),
     );
-    return quantityTypes;
+    return quantityTypes.filter((type) => type.name.length > 0);
   }
 
   private parseBaseUnit(unit: XMLBaseUnit): BaseUnit {

@@ -48,12 +48,3 @@ model ConversionParameters {
   d    Float
   Unit Unit[]
 }
-
-// model QuantityTypeOnUnit {
-//   type   QuantityType @relation(fields: [typeId], references: [id])
-//   typeId Int // relation scalar field (used in the `@relation` attribute above)
-//   unit   Unit         @relation(fields: [unitId], references: [id])
-//   unitId Int // relation scalar field (used in the `@relation` attribute above)
-
-//   @@id([typeId, unitId])
-// }

@@ -13,6 +13,7 @@
   },
   "scripts": {
     "populate": "tsx src/scripts/populate-db.ts",
-    "clean": "tsx src/scripts/clean-db.ts"
+    "clean": "tsx src/scripts/clean-db.ts",
+    "test-repo": "tsx src/scripts/test-repo.ts"
   }
 }
