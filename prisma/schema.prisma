@@ -17,14 +17,36 @@ model QuantityType {
 }
 
 model Unit {
-  id     Int            @id @default(autoincrement())
-  name   String         @unique
-  symbol String
-  types  QuantityType[]
-  a      Float
-  b      Float
-  c      Float
-  d      Float
+  id      String         @id
+  name    String
+  symbol  String
+  aliases UnitAlias[]
+  types   QuantityType[]
+
+  // Conversion parameters
+  parameters   ConversionParameters? @relation(fields: [parametersId], references: [id])
+  parametersId Int?
+
+  // Base Unit
+  baseUnit   Unit?   @relation("baseUnit", fields: [baseUnitId], references: [id])
+  baseUnitId String?
+  units      Unit[]  @relation("baseUnit")
+}
+
+model UnitAlias {
+  id     Int    @id @default(autoincrement())
+  name   String @unique
+  unit   Unit   @relation(fields: [unitId], references: [id])
+  unitId String
+}
+
+model ConversionParameters {
+  id   Int    @id @default(autoincrement())
+  a    Float
+  b    Float
+  c    Float
+  d    Float
+  Unit Unit[]
 }
 
 // model QuantityTypeOnUnit {
