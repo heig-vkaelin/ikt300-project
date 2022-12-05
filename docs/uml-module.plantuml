@@ -11,15 +11,14 @@ package "Validator" {}
 package "Domain" {
   interface IUnit
   class UnitFactory
-
   class UnitRepository
 }
 
 
 ConverterController --> Converter
+ConverterController --> UnitRepository
 Converter --> IUnit
 Converter --> UnitFactory
-Converter --> UnitRepository
 
 Main --> IUnit
 Main --> Parser

@@ -29,6 +29,14 @@ package "Domain" {
   class QuantityType {
       # name: string
   }
+  class UnitRepository {
+    + getUnitFromname(name: string): IUnit
+    + listUnitDimensions(): sting[]
+    + listQuanitytClasses(): string[]
+    + listQuantityClassForUnit(unit: string): string[]
+    + listAliasForUnit(unit: string): string[]
+    + createSubQuantityClass(parent: string, className: string): void
+  }
 }
 
 BaseUnit -UP-|> IUnit
@@ -37,5 +45,6 @@ CustomaryUnit "*" --> "1" BaseUnit
 CustomaryUnit "*" --* "1" ConversionParameter
 IUnit "*" -RIGHT-> "*" QuantityType
 UnitFactory --> IUnit
+UnitFactory --> UnitRepository
 
 @enduml
