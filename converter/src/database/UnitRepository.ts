@@ -1,10 +1,10 @@
 import prisma from '../database/Client';
 
-export class UnitRepository {
-  public static async getUnitFromName(name: string) {
+class UnitRepository {
+  private async getUnit(value: string, field: string) {
     const unit = await prisma.unit.findFirstOrThrow({
       where: {
-        name: name,
+        [field]: value,
       },
       include: {
         aliases: true,
@@ -16,7 +16,10 @@ export class UnitRepository {
     });
     return unit;
   }
-  public static async listAllUnits(): Promise<string[]> {
+  public async getUnitFromName(name: string) {
+    return this.getUnit(name, 'name');
+  }
+  public async listAllUnits(): Promise<string[]> {
     const units = await prisma.unit.findMany({
       select: {
         name: true,
@@ -28,7 +31,7 @@ export class UnitRepository {
     return units.map((unit) => unit.name);
   }
 
-  public static async listQuantityClasses(): Promise<string[]> {
+  public async listQuantityClasses(): Promise<string[]> {
     const types = await prisma.quantityType.findMany({
       select: {
         name: true,
@@ -40,7 +43,7 @@ export class UnitRepository {
     return types.map((type) => type.name);
   }
 
-  public static async listUnitsForType(type: string): Promise<string[]> {
+  public async listUnitsForType(type: string): Promise<string[]> {
     const units = await prisma.unit.findMany({
       select: {
         name: true,
@@ -59,7 +62,7 @@ export class UnitRepository {
     return units.map((unit) => unit.name);
   }
 
-  public static async listAliasForUnit(name: string): Promise<string[]> {
+  public async listAliasForUnit(name: string): Promise<string[]> {
     const unit = await prisma.unit.findFirstOrThrow({
       where: {
         name: name,
@@ -71,8 +74,28 @@ export class UnitRepository {
     return unit.aliases.map((alias) => alias.name);
   }
 
-  public static async createSubQuantityClass(parent: string, className: string): Promise<void> {
-    return;
+  public async createSubQuantityClass(className: string, unitIds: string[]): Promise<void> {
+    // Check that all classes have the same quantity type
+    const units = await Promise.all(unitIds.map((id) => this.getUnit(id, 'id')));
+    const allTypes = [units.map((unit) => unit.types.map((type) => type.name))].flat();
+    const intersection = allTypes.reduce((a, b) => a.filter((c) => b.includes(c)));
+
+    if (intersection.length < 1) {
+      throw new Error('All units must have the same quantity type to create a sub quantity class.');
+    }
+
+    await prisma.quantityType.upsert({
+      where: { name: className },
+      update: {},
+      create: {
+        name: className,
+        units: {
+          connect: units.map((unit) => {
+            return { id: unit.id };
+          }),
+        },
+      },
+    });
   }
 }
 
