@@ -1,15 +1,29 @@
 @startuml uml-module-diagram
-package "API" {}
+package "API" {
+  class ConverterController
+}
 package "Main" {}
-package "Converter" {}
+package "Converter" {
+  class Converter
+}
 package "Parser" {}
 package "Validator" {}
-package "Database" {}
+package "Domain" {
+  interface IUnit
+  class UnitFactory
 
-API --> Converter
-Converter --> Database
-Main --> Database
+  class UnitRepository
+}
+
+
+ConverterController --> Converter
+Converter --> IUnit
+Converter --> UnitFactory
+Converter --> UnitRepository
+
+Main --> IUnit
 Main --> Parser
+Main --> UnitRepository
 Parser --> Validator
 
 @enduml

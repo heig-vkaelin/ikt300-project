@@ -12,22 +12,22 @@ package "Domain" {
     + {static} loadUnit(name: string): IUnit
   }
   class ConversionParameter {
-      + A: number
-      + B: number
-      + C: number
-      + D: number
+      # A: number
+      # B: number
+      # C: number
+      # D: number
   }
 
   class BaseUnit {
-      + description: string
+      # description: string
   }
 
   class CustomaryUnit {
-      + baseUnit: BaseUnit
-      + conversionParameter: ConversionParameter
+      # baseUnit: BaseUnit
+      # conversionParameter: ConversionParameter
   }
   class QuantityType {
-      + name: string
+      # name: string
   }
 }
 

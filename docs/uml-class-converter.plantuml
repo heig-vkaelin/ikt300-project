@@ -8,14 +8,14 @@ package "Converter" {
 
 package "Domain" {
   interface IUnit {
-    name: string
-    types: QuantityType[]
-    symbol: string
+    + name: string
+    + types: QuantityType[]
+    + symbol: string
     + convertToBase(value: number): number
     + convertFromBase(value: number): number
   }
   class UnitFactory {
-    {static} loadUnit(name: string): IUnit
+    + {static} loadUnit(name: string): IUnit
   }
 }
 
