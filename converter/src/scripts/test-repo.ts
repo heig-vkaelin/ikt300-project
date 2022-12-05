@@ -17,7 +17,9 @@ async function main() {
     // console.log(unitsForHeight);
 
     const aliasForMetre = await UnitRepository.listAliasForUnit('metre');
-    console.log(aliasForMetre);
+    // console.log(aliasForMetre);
+
+    await UnitRepository.createSubQuantityClass('running', ['cm', 'dm', 'm', 'mi', 'km']);
   } catch (error) {
     console.error(error);
   }

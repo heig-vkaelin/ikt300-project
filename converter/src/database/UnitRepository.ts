@@ -72,8 +72,20 @@ class UnitRepository {
     return unit.aliases.map((alias) => alias.name);
   }
 
-  public static async createSubQuantityClass(parent: string, className: string): Promise<void> {
-    return;
+  // TODO: update this because for now it's quite shit
+  public static async createSubQuantityClass(className: string, units: string[]): Promise<void> {
+    await prisma.quantityType.upsert({
+      where: { name: className },
+      update: {},
+      create: {
+        name: className,
+        units: {
+          connect: units.map((unit) => {
+            return { id: unit };
+          }),
+        },
+      },
+    });
   }
 }
 
