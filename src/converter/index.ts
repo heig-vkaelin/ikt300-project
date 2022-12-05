@@ -1,5 +1,5 @@
-import IUnit from '../database/IUnit';
-import UnitLoader from '../database/UnitLoader';
+import IUnit from '../domain/IUnit';
+import UnitLoader from '../domain/UnitLoader';
 import * as readline from 'node:readline/promises';
 import { exit, stdin as input, stdout as output } from 'node:process';
 

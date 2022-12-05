@@ -1,11 +1,11 @@
-import IUnit from '../database/IUnit';
-import CustomaryUnit from '../database/CustomaryUnit';
-import ConversionParameters from '../database/ConversionParameters';
+import IUnit from '../domain/IUnit';
+import CustomaryUnit from '../domain/CustomaryUnit';
+import ConversionParameters from '../domain/ConversionParameters';
 import IParser from './IParser';
 import got from 'got';
 import { XMLParser } from 'fast-xml-parser';
 import { XMLUnit, XMLUnitSchema } from '../validator/XMLUnitValidator';
-import QuantityType from '../database/QuantityType';
+import QuantityType from '../domain/QuantityType';
 
 class ParserXML implements IParser {
   private getFactors(unit: XMLUnit): ConversionParameters {

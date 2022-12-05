@@ -1,6 +1,6 @@
 import { PrismaClient } from '@prisma/client';
-import CustomaryUnit from './database/CustomaryUnit';
-import IUnit from './database/IUnit';
+import CustomaryUnit from './domain/CustomaryUnit';
+import IUnit from './domain/IUnit';
 import ParserXML from './parser/ParserXML';
 
 const prisma = new PrismaClient();
