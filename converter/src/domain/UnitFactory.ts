@@ -1,4 +1,4 @@
-import UnitRepository from '../database/UnitRepository';
+import { UnitRepository } from '../database/UnitRepository';
 import BaseUnit from './BaseUnit';
 import CustomaryUnit from './CustomaryUnit';
 import IUnit from './IUnit';
@@ -9,9 +9,11 @@ const DEFAULT_PARAMETERS = {
   c: 0,
   d: 0,
 };
+
 class UnitFactory {
   public static async loadUnit(unitName: string): Promise<IUnit> {
-    const unit = await UnitRepository.getUnitFromName(unitName);
+    const repo = new UnitRepository();
+    const unit = await repo.getUnitFromName(unitName);
 
     if (unit.baseUnitId) {
       return new CustomaryUnit(

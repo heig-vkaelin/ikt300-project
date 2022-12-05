@@ -2,43 +2,51 @@ import { Request, Response } from "express";
 import { UnitRepository, Converter } from "engineering-unit-converter";
 
 export default class ConverterController {
-  public static async listUnitDimensions(req: Request, res: Response) {
-    const list = await UnitRepository.listAllUnits();
+  private readonly _repo: UnitRepository;
+  private readonly _converter: Converter;
+
+  constructor() {
+    this._repo = new UnitRepository();
+    this._converter = new Converter();
+  }
+
+  public async listUnitDimensions(req: Request, res: Response) {
+    console.log(this._repo);
+    const list = await this._repo.listAllUnits();
     res.send(list);
   }
 
-  public static async listQuantityClass(req: Request, res: Response) {
-    const list = await UnitRepository.listQuantityClasses();
+  public async listQuantityClass(req: Request, res: Response) {
+    const list = await this._repo.listQuantityClasses();
     res.send(list);
   }
 
-  public static async listUnitsForType(req: Request, res: Response) {
+  public async listUnitsForType(req: Request, res: Response) {
     const type = req.query.type?.toString() || "";
-    const list = await UnitRepository.listUnitsForType(type);
+    const list = await this._repo.listUnitsForType(type);
     res.send(list);
   }
 
-  public static async listAliasForUnit(req: Request, res: Response) {
+  public async listAliasForUnit(req: Request, res: Response) {
     const unit = req.query.unit?.toString() || "";
-    const list = await UnitRepository.listAliasForUnit(unit);
+    const list = await this._repo.listAliasForUnit(unit);
     res.send(list);
   }
 
-  public static async convertUnit(req: Request, res: Response) {
+  public async convertUnit(req: Request, res: Response) {
     const unitA = req.query.unitA?.toString() || "";
     const unitB = req.query.unitB?.toString() || "";
     const valueString = req.query.value?.toString() || "";
     const value = parseFloat(valueString);
 
-    const converter = new Converter();
-    const result = await converter.convert(unitA, unitB, value);
+    const result = await this._converter.convert(unitA, unitB, value);
 
     res.send({ result });
   }
-  public static async createSubQuantityClass(req: Request, res: Response) {
-    const name = req.body.name?.toString() || "";
-    const parent = req.body.parent?.toString() || "";
-    await UnitRepository.createSubQuantityClass(parent, name);
+  public async createSubQuantityClass(req: Request, res: Response) {
+    const className = req.body.className;
+    const unitIds = req.body.unitIds;
+    await this._repo.createSubQuantityClass(className, unitIds);
 
     res.sendStatus(200);
   }

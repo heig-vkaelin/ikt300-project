@@ -8,7 +8,7 @@ import {
   XMLBaseUnitSchema,
   XMLCustomaryUnit,
   XMLCustomaryUnitSchema,
-} from '../validator/XMLUnitValidator';
+} from './XMLUnitValidator';
 import QuantityType from '../domain/QuantityType';
 import BaseUnit from '../domain/BaseUnit';
 

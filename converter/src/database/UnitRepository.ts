@@ -1,6 +1,6 @@
 import prisma from '../database/Client';
 
-class UnitRepository {
+export class UnitRepository {
   private async getUnit(value: string, field: string) {
     const unit = await prisma.unit.findFirstOrThrow({
       where: {
@@ -98,5 +98,3 @@ class UnitRepository {
     });
   }
 }
-
-export default UnitRepository;

@@ -1,4 +1,3 @@
-import ConversionParameters from './ConversionParameters';
 import IUnit from './IUnit';
 import QuantityType from './QuantityType';
 

@@ -1,4 +1,4 @@
-import UnitRepository from '../database/UnitRepository';
+import { UnitRepository } from '../database/UnitRepository';
 
 // TODO: this is a tmp file, don't forget to delete it
 

@@ -1,4 +1,5 @@
 import UnitFactory from '../domain/UnitFactory';
+import { ConversionResult } from './ConversionResult';
 
 export class Converter {
   public async convert(unitNameA: string, unitNameB: string, value: number) {
@@ -8,6 +9,6 @@ export class Converter {
     const baseValue = unitA.convertToBase(value);
     const convertedValue = unitB.convertFromBase(baseValue);
 
-    return convertedValue;
+    return new ConversionResult(unitA, unitB, value, convertedValue);
   }
 }

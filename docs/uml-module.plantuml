@@ -2,27 +2,23 @@
 package "API" {
   class ConverterController
 }
-package "Main" {}
 package "Converter" {
   class Converter
+  class ConversionResult
 }
-package "Parser" {}
-package "Validator" {}
 package "Domain" {
   interface IUnit
   class UnitFactory
+}
+package "Database" {
   class UnitRepository
 }
 
-
 ConverterController --> Converter
+ConverterController --> ConversionResult
 ConverterController --> UnitRepository
 Converter --> IUnit
 Converter --> UnitFactory
-
-Main --> IUnit
-Main --> Parser
-Main --> UnitRepository
-Parser --> Validator
+UnitFactory --> UnitRepository
 
 @enduml
