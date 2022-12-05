@@ -1,4 +1,5 @@
 import { Request, Response } from 'express';
+import * as EUC from 'engineering-unit-converter'
 
 export default class ConverterController {
   public static listUnitDimensions(req: Request, res: Response) {

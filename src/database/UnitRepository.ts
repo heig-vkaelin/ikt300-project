@@ -1,6 +1,6 @@
 import IUnit from '../domain/IUnit';
 
-class UnitRepository {
+export class UnitRepository {
   getUnitFromname(name: string): IUnit {
     throw 'Not implemented yet';
   }

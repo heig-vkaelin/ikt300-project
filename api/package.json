@@ -11,6 +11,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "engineering-unit-converter": "file:..",
     "express": "^4.18.2",
     "typescript": "^4.9.3"
   },
