@@ -1,14 +1,19 @@
-import IUnit from '../domain/IUnit';
 import CustomaryUnit from '../domain/CustomaryUnit';
 import ConversionParameters from '../domain/ConversionParameters';
-import IParser from './IParser';
+import IParser, { ParserResult } from './IParser';
 import got from 'got';
 import { XMLParser } from 'fast-xml-parser';
-import { XMLUnit, XMLUnitSchema } from '../validator/XMLUnitValidator';
+import {
+  XMLBaseUnit,
+  XMLBaseUnitSchema,
+  XMLCustomaryUnit,
+  XMLCustomaryUnitSchema,
+} from '../validator/XMLUnitValidator';
 import QuantityType from '../domain/QuantityType';
+import BaseUnit from '../domain/BaseUnit';
 
 class ParserXML implements IParser {
-  private getFactors(unit: XMLUnit): ConversionParameters {
+  private getFactors(unit: XMLCustomaryUnit): ConversionParameters {
     let a = 0,
       b = 0,
       c = 0,
@@ -30,18 +35,35 @@ class ParserXML implements IParser {
     return new ConversionParameters(a, b, c, d);
   }
 
-  private parseCustomaryUnit(unit: XMLUnit): CustomaryUnit {
+  private getQuantityTypes(unit: XMLBaseUnit): QuantityType[] {
     const types = unit.QuantityType ?? [];
     const quantityTypes = (Array.isArray(types) ? types : [types]).map(
       (type) => new QuantityType(type),
     );
-
-    const factors = this.getFactors(unit);
-
-    return new CustomaryUnit(unit.Name, quantityTypes, unit.CatalogSymbol['#text'], factors);
+    return quantityTypes;
   }
 
-  public async parse(input: string): Promise<CustomaryUnit[]> {
+  private parseBaseUnit(unit: XMLBaseUnit): BaseUnit {
+    return new BaseUnit(
+      unit.annotation,
+      unit.Name,
+      this.getQuantityTypes(unit),
+      unit.CatalogSymbol['#text'],
+    );
+  }
+
+  private parseCustomaryUnit(unit: XMLCustomaryUnit): CustomaryUnit {
+    return new CustomaryUnit(
+      unit.annotation,
+      unit.Name,
+      this.getQuantityTypes(unit),
+      unit.CatalogSymbol['#text'],
+      this.getFactors(unit),
+      unit.ConversionToBaseUnit.baseUnit,
+    );
+  }
+
+  public async parse(input: string): Promise<ParserResult> {
     const { body } = await got.get(input);
 
     const parser = new XMLParser({
@@ -51,7 +73,7 @@ class ParserXML implements IParser {
     });
     const data = parser.parse(body);
 
-    const result: CustomaryUnit[] = [];
+    const result: { base: BaseUnit[]; customary: CustomaryUnit[] } = { base: [], customary: [] };
     for (const rawUnit of data.UnitOfMeasureDictionary.UnitsDefinition.UnitOfMeasure) {
       // Don't parse deprecated units or units without a name
       if (rawUnit.Deprecated || !rawUnit.Name.length) {
@@ -59,18 +81,25 @@ class ParserXML implements IParser {
         continue;
       }
 
-      // TODO: Base unit
+      // Base unit
       if (rawUnit.BaseUnit !== undefined) {
-        // console.log(unit);
-      } else {
-        // Customary unit
-        const validation = XMLUnitSchema.safeParse(rawUnit);
+        const validation = XMLBaseUnitSchema.safeParse(rawUnit);
         if (!validation.success) {
-          console.error('Error in parsing unit', rawUnit, validation.error);
+          console.error('Error in parsing base unit', rawUnit, validation.error);
           continue;
         }
         const { data: unit } = validation;
-        result.push(this.parseCustomaryUnit(unit));
+        result.base.push(this.parseBaseUnit(unit));
+      }
+      // Customary unit
+      else {
+        const validation = XMLCustomaryUnitSchema.safeParse(rawUnit);
+        if (!validation.success) {
+          console.error('Error in parsing customary unit', rawUnit, validation.error);
+          continue;
+        }
+        const { data: unit } = validation;
+        result.customary.push(this.parseCustomaryUnit(unit));
       }
     }
 
