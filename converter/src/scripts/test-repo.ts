@@ -4,22 +4,24 @@ import UnitRepository from '../database/UnitRepository';
 
 async function main() {
   try {
-    const darcy = await UnitRepository.getUnitFromName('darcy');
+    const repo = new UnitRepository();
+
+    const darcy = await repo.getUnitFromName('darcy');
     // console.log(darcy);
 
-    const units = await UnitRepository.listAllUnits();
+    const units = await repo.listAllUnits();
     // console.log(units);
 
-    const types = await UnitRepository.listQuantityClasses();
+    const types = await repo.listQuantityClasses();
     // console.log(types);
 
-    const unitsForHeight = await UnitRepository.listUnitsForType('height');
+    const unitsForHeight = await repo.listUnitsForType('height');
     // console.log(unitsForHeight);
 
-    const aliasForMetre = await UnitRepository.listAliasForUnit('metre');
+    const aliasForMetre = await repo.listAliasForUnit('metre');
     // console.log(aliasForMetre);
 
-    await UnitRepository.createSubQuantityClass('running', ['cm', 'dm', 'm', 'mi', 'km']);
+    await repo.createSubQuantityClass('running', ['cm', 'dm', 'm', 'mi', 'km']);
   } catch (error) {
     console.error(error);
   }
