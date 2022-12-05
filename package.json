@@ -12,7 +12,7 @@
     "tsx": "^3.12.1"
   },
   "scripts": {
-    "dev": "tsx watch src/main.ts",
-    "start": "tsx src/main.ts"
+    "populate": "tsx src/scripts/populate-db.ts",
+    "clean": "tsx src/scripts/clean-db.ts"
   }
 }
