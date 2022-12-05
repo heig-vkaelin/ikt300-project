@@ -3,7 +3,7 @@
 package "API" {
   class ConverterController {
     + listUnitDimensions(): sting[]
-    + listQuanitytClasses(): string[]
+    + listQuantityClasses(): string[]
     + listQuantityClassForUnit(unit: string): string[]
     + listAliasForUnit(unit: string): string[]
     + convertUnit(unitA: string, unitB: string, value: number): ConversionResult
@@ -38,7 +38,7 @@ package "Domain" {
   class UnitRepository {
     + getUnitFromname(name: string): IUnit
     + listUnitDimensions(): sting[]
-    + listQuanitytClasses(): string[]
+    + listQuantityClasses(): string[]
     + listQuantityClassForUnit(unit: string): string[]
     + listAliasForUnit(unit: string): string[]
     + createSubQuantityClass(parent: string, className: string): void

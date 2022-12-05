@@ -32,7 +32,7 @@ package "Domain" {
   class UnitRepository {
     + getUnitFromname(name: string): IUnit
     + listUnitDimensions(): sting[]
-    + listQuanitytClasses(): string[]
+    + listQuantityClasses(): string[]
     + listQuantityClassForUnit(unit: string): string[]
     + listAliasForUnit(unit: string): string[]
     + createSubQuantityClass(parent: string, className: string): void
