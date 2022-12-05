@@ -29,14 +29,10 @@ package "Domain" {
   class QuantityType {
       # name: string
   }
-  class UnitRepository {
-    + getUnitFromname(name: string): IUnit
-    + listUnitDimensions(): sting[]
-    + listQuantityClasses(): string[]
-    + listQuantityClassForUnit(unit: string): string[]
-    + listAliasForUnit(unit: string): string[]
-    + createSubQuantityClass(parent: string, className: string): void
-  }
+}
+
+package "Database" {
+  class UnitRepository {}
 }
 
 BaseUnit -UP-|> IUnit

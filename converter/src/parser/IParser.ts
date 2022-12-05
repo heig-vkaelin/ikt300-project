@@ -1,6 +1,5 @@
 import BaseUnit from '../domain/BaseUnit';
 import CustomaryUnit from '../domain/CustomaryUnit';
-import IUnit from '../domain/IUnit';
 
 export type ParserResult = { base: BaseUnit[]; customary: CustomaryUnit[] };
 
