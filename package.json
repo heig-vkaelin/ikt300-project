@@ -21,6 +21,7 @@
     "populate": "tsx src/scripts/populate-db.ts",
     "clean": "tsx src/scripts/clean-db.ts",
     "dev": "tsc --watch",
-    "build": "tsc --build tsconfig.json"
+    "build": "tsc --build tsconfig.json",
+    "test-repo": "tsx src/scripts/test-repo.ts"
   }
 }
