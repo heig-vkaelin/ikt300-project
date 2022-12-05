@@ -1,7 +1,7 @@
 {
   "name": "engineering-unit-converter",
-  "main": "dist/converter/index.js",
-  "typings": "dist/",
+  "main": "dist/index.js",
+  "typings": "dist/index",
   "files": [
     "dist/*"
   ],

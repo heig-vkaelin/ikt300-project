@@ -1,8 +1,7 @@
 import prisma from '../database/Client';
-import { Unit } from '@prisma/client';
 
-class UnitRepository {
-  public static async getUnitFromName(name: string): Promise<Unit> {
+export class UnitRepository {
+  public static async getUnitFromName(name: string) {
     const unit = await prisma.unit.findFirstOrThrow({
       where: {
         name: name,

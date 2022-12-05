@@ -1,40 +1,44 @@
-import { Request, Response } from 'express';
-import * as EUC from 'engineering-unit-converter'
+import { Request, Response } from "express";
+import { UnitRepository, Converter } from "engineering-unit-converter";
 
 export default class ConverterController {
-  public static listUnitDimensions(req: Request, res: Response) {
-    res.send([]);
+  public static async listUnitDimensions(req: Request, res: Response) {
+    const list = await UnitRepository.listAllUnits();
+    res.send(list);
   }
 
-  public static listQuantityClass(req: Request, res: Response) {
-    res.send([]);
+  public static async listQuantityClass(req: Request, res: Response) {
+    const list = await UnitRepository.listQuantityClasses();
+    res.send(list);
   }
 
-  public static listQuantityClassForUnit(req: Request, res: Response) {
-    const body = JSON.parse(req.body);
-    const unit = body['unit'];
-
-    res.send([]);
+  public static async listUnitsForType(req: Request, res: Response) {
+    const type = req.query.type?.toString() || "";
+    const list = await UnitRepository.listUnitsForType(type);
+    res.send(list);
   }
 
-  public static listAliasForUnit(req: Request, res: Response) {
-    const body = JSON.parse(req.body);
-    const unit = body['unit'];
-
-    res.send([]);
+  public static async listAliasForUnit(req: Request, res: Response) {
+    const unit = req.query.unit?.toString() || "";
+    const list = await UnitRepository.listAliasForUnit(unit);
+    res.send(list);
   }
-  public static convertUnit(req: Request, res: Response) {
-    const body = JSON.parse(req.body);
-    const unitA = body['unitA'];
-    const unitB = body['unitB'];
-    const value = body['value'];
 
-    res.send({});
+  public static async convertUnit(req: Request, res: Response) {
+    const unitA = req.query.unitA?.toString() || "";
+    const unitB = req.query.unitB?.toString() || "";
+    const valueString = req.query.value?.toString() || "";
+    const value = parseFloat(valueString);
+
+    const converter = new Converter();
+    const result = await converter.convert(unitA, unitB, value);
+
+    res.send({ result });
   }
-  public static createSubQuantityClass(req: Request, res: Response) {
-    const body = JSON.parse(req.body);
-    const parent = body['parent'];
-    const name = body['name'];
+  public static async createSubQuantityClass(req: Request, res: Response) {
+    const name = req.body.name?.toString() || "";
+    const parent = req.body.parent?.toString() || "";
+    await UnitRepository.createSubQuantityClass(parent, name);
 
     res.sendStatus(200);
   }

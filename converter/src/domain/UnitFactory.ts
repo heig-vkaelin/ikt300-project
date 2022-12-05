@@ -1,16 +1,28 @@
+import UnitRepository from '../database/UnitRepository';
+import BaseUnit from './BaseUnit';
+import CustomaryUnit from './CustomaryUnit';
 import IUnit from './IUnit';
-import UnitLoader from './UnitLoader';
 
+const DEFAULT_PARAMETERS = {
+  a: 0,
+  b: 0,
+  c: 0,
+  d: 0,
+};
 class UnitFactory {
-  public static loadUnit(unitName: string): IUnit {
-    const units = UnitLoader.loadUnits();
-    const unit = units.find((u) => u.symbol === unitName);
+  public static async loadUnit(unitName: string): Promise<IUnit> {
+    const unit = await UnitRepository.getUnitFromName(unitName);
 
-    if (!unit) {
-      throw new Error(`Could not find unit with name: ${unitName}`);
+    if (unit.baseUnitId) {
+      return new CustomaryUnit(
+        unit.id,
+        unit.name,
+        unit.types,
+        unit.symbol,
+        unit.parameters || DEFAULT_PARAMETERS,
+      );
     }
-
-    return unit;
+    return new BaseUnit(unit.id, unit.name, unit.types, unit.symbol);
   }
 }
 
