@@ -1,4 +1,4 @@
-import IUnit from './IUnit';
+import IUnit from '../domain/IUnit';
 
 class UnitRepository {
   getUnitFromname(name: string): IUnit {

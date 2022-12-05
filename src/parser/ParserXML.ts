@@ -77,7 +77,6 @@ class ParserXML implements IParser {
     for (const rawUnit of data.UnitOfMeasureDictionary.UnitsDefinition.UnitOfMeasure) {
       // Don't parse deprecated units or units without a name
       if (rawUnit.Deprecated || !rawUnit.Name.length) {
-        console.log('Deprecated + ' + rawUnit.Name);
         continue;
       }
 
