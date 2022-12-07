@@ -2,8 +2,8 @@
 
 package "API" {
   class ConverterController {
-    + listUnitDimensions(): sting[]
-    + listQuantityClasses(): string[]
+    + listUnits(): string[]
+    + listQuantityTypes(): string[]
     + listUnitsForType(type: string): string[]
     + listAliasForUnit(unit: string): string[]
     + convertUnit(unitA: string, unitB: string, value: number): ConversionResult
@@ -26,7 +26,9 @@ package "Converter" {
 
 package "Domain" {
   interface IUnit {
+    + id: string
     + name: string
+    + aliases: string[]
     + types: QuantityType[]
     + symbol: string
     + convertToBase(value: number): number
@@ -39,12 +41,12 @@ package "Domain" {
 
 package "Database" {
   class UnitRepository {
-    + getUnitFromname(name: string): IUnit
-    + listUnitDimensions(): sting[]
-    + listQuantityClasses(): string[]
+    + getUnitFromNameOrId(value: string): IUnit
+    + listAllUnits(): sting[]
+    + listQuantityTypes(): string[]
     + listUnitsForType(type: string): string[]
     + listAliasForUnit(unit: string): string[]
-    + createSubQuantityClass(parent: string, className: string): void
+    + createSubQuantityClass(className: string, unitIds: string[]): void
   }
 }
 
