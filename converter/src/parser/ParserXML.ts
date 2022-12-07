@@ -12,7 +12,7 @@ import {
 import QuantityType from '../domain/QuantityType';
 import BaseUnit from '../domain/BaseUnit';
 
-class ParserXML implements IParser {
+export default class ParserXML implements IParser {
   private getFactors(unit: XMLCustomaryUnit): ConversionParameters {
     let a = 0,
       b = 0,
@@ -105,5 +105,3 @@ class ParserXML implements IParser {
     return result;
   }
 }
-
-export default new ParserXML();

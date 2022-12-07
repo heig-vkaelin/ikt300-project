@@ -11,10 +11,11 @@ function findDuplicates(units: IUnit[]) {
 }
 
 async function main() {
-  const result = await ParserXML.parse('http://w3.energistics.org/uom/poscUnits22.xml');
+  const parser = new ParserXML();
+  const result = await parser.parse('http://w3.energistics.org/uom/poscUnits22.xml');
   console.log(result.base.length + ' base units parsed');
   console.log(result.customary.length + ' customary units parsed');
-  DBInitialize.saveToDB(result);
+  await DBInitialize.saveToDB(result);
 }
 
 main();
