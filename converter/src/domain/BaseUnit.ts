@@ -6,12 +6,14 @@ class BaseUnit implements IUnit {
   public name: string;
   public types: QuantityType[];
   public symbol: string;
+  public baseUnit: string;
 
   constructor(id: string, name: string, types: QuantityType[], symbol: string) {
     this.id = id;
     this.name = name;
     this.types = types;
     this.symbol = symbol;
+    this.baseUnit = symbol;
   }
 
   public convertToBase(value: number): number {

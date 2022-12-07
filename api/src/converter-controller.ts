@@ -37,7 +37,6 @@ export default class ConverterController {
     const unitB = req.query.unitB?.toString() || "";
     const valueString = req.query.value?.toString() || "";
     const value = parseFloat(valueString);
-
     const result = await this._converter.convert(unitA, unitB, value);
 
     res.send({ result });

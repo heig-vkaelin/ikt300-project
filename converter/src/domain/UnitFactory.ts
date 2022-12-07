@@ -15,13 +15,14 @@ class UnitFactory {
     const repo = new UnitRepository();
     const unit = await repo.getUnitFromNameOrId(unitName);
 
-    if (unit.baseUnitId) {
+    if (unit.baseUnitId && unit.baseUnit !== null) {
       return new CustomaryUnit(
         unit.id,
         unit.name,
         unit.types,
         unit.symbol,
         unit.parameters || DEFAULT_PARAMETERS,
+        unit.baseUnit.symbol,
       );
     }
     return new BaseUnit(unit.id, unit.name, unit.types, unit.symbol);

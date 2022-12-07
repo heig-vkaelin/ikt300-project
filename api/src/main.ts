@@ -12,7 +12,7 @@ const errorWrapper =
       await controllerMethod(req, res, next);
     } catch (e: any) {
       console.error(e);
-      res.status(500).send({ error: e.message });
+      res.status(500).send({ message: e.message });
     }
   };
 

@@ -6,6 +6,7 @@ interface IUnit {
   aliases?: string[];
   types: QuantityType[];
   symbol: string;
+  baseUnit: string;
   convertToBase(value: number): number;
   convertFromBase(value: number): number;
 }

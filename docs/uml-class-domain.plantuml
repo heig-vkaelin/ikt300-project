@@ -7,6 +7,7 @@ package "Domain" {
     + aliases: string[]
     + types: QuantityType[]
     + symbol: string
+    + baseUnit: string
     + convertToBase(value: number): number
     + convertFromBase(value: number): number
   }
@@ -24,7 +25,6 @@ package "Domain" {
   }
 
   class CustomaryUnit {
-      # baseUnit: BaseUnit
       # conversionParameters: ConversionParameters
   }
   class QuantityType {

@@ -7,7 +7,7 @@ class CustomaryUnit implements IUnit {
   public name: string;
   public types: QuantityType[];
   public symbol: string;
-  public baseUnit?: string;
+  public baseUnit: string;
   public parameters: ConversionParameters;
 
   constructor(
@@ -16,7 +16,7 @@ class CustomaryUnit implements IUnit {
     types: QuantityType[],
     symbol: string,
     parameters: ConversionParameters,
-    baseUnit?: string,
+    baseUnit: string,
   ) {
     this.id = id;
     this.name = name;
