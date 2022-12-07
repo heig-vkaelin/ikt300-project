@@ -11,7 +11,6 @@ export default class ConverterController {
   }
 
   public async listUnitDimensions(req: Request, res: Response) {
-    console.log(this._repo);
     const list = await this._repo.listAllUnits();
     res.send(list);
   }

@@ -1,41 +1,53 @@
-import express, { Request, Response } from "express";
+import express, { Request, Response, NextFunction } from "express";
 import dotenv from "dotenv";
 import ConverterController from "./converter-controller";
 
 dotenv.config();
 dotenv.config({ path: `.env.local`, override: true });
 
+const errorWrapper =
+  (controllerMethod: any) =>
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      await controllerMethod(req, res, next);
+    } catch (e: any) {
+      console.error(e);
+      res.status(500).send({ error: e.message });
+    }
+  };
 
 const converterController = new ConverterController();
 
 const app = express();
 app.use(express.json());
-app.get("/", (req: Request, res: Response) => {
+app.get("/", (_, res: Response) => {
   res.send("Running");
 });
 app.get(
   "/api/list-dimensions",
-  converterController.listUnitDimensions.bind(converterController)
+  errorWrapper(converterController.listUnitDimensions.bind(converterController))
 );
 app.get(
   "/api/list-quantity-class",
-  converterController.listQuantityClass.bind(converterController)
+  errorWrapper(converterController.listQuantityClass.bind(converterController))
 );
 app.get(
   "/api/list-unity-for-type",
-  converterController.listUnitsForType.bind(converterController)
+  errorWrapper(converterController.listUnitsForType.bind(converterController))
 );
 app.get(
   "/api/list-alias-for-unit",
-  converterController.listAliasForUnit.bind(converterController)
+  errorWrapper(converterController.listAliasForUnit.bind(converterController))
 );
 app.get(
   "/api/convert",
-  converterController.convertUnit.bind(converterController)
+  errorWrapper(converterController.convertUnit.bind(converterController))
 );
 app.post(
   "/api/create-sub-quantity",
-  converterController.createSubQuantityClass.bind(converterController)
+  errorWrapper(
+    converterController.createSubQuantityClass.bind(converterController)
+  )
 );
 
 app.listen(process.env.PORT);
