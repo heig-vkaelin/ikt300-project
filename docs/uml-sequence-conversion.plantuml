@@ -1,0 +1,37 @@
+@startuml conversion
+
+actor User
+participant API
+participant Converter
+participant UnitFactory
+participant UnitRepository
+database Sqlite
+
+group Request Converting Values
+  User --> API: Ask to convert 200 m/s (UnitA) to km/h (UnitB)
+
+  API --> Converter: Invoke Converter
+  Converter --> UnitFactory: Request UnitA Object
+  UnitFactory --> UnitRepository: Request UnitA Entity
+
+  UnitRepository --> Sqlite: Database Query
+  Sqlite --> UnitRepository: Query Result
+
+  UnitRepository --> UnitFactory: Return UnitA Entity
+  UnitFactory --> Converter: UnitA Object
+
+
+  Converter --> UnitFactory: Request UnitB Object
+  UnitFactory --> UnitRepository: Request UnitB Entity
+
+  UnitRepository --> Sqlite: Database Query
+  Sqlite --> UnitRepository: Query Result
+
+  UnitRepository --> UnitFactory: Return UnitB Entity
+  UnitFactory --> Converter: UnitB Object
+
+  Converter --> API: Return Conversion Result Object
+  API --> User: Return Result Object
+end
+
+@enduml

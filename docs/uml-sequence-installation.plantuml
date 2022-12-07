@@ -1,0 +1,38 @@
+@startuml installation
+
+actor User
+actor Developer
+participant API
+participant ConverterLib
+database Sqlite
+
+== Initialization ==
+
+group initialize system 
+  Developer --> ConverterLib: Update Database
+  ConverterLib --> Sqlite: Execute Migrations
+
+  Developer --> ConverterLib: Run Build
+  Developer --> ConverterLib: Populate Database
+  ConverterLib --> Sqlite: Add base units
+  ConverterLib --> Sqlite: Add customary units
+  ConverterLib --> Sqlite: Add quantity types
+
+  ConverterLib --> Developer: Database Ready
+
+
+  Developer --> API: Start API
+  API --> Developer: API Ready
+end
+
+== Repetition ==
+
+User --> API: Convert Values
+API --> ConverterLib: Convert
+ConverterLib --> Sqlite: Load Units
+Sqlite --> ConverterLib: Units
+ConverterLib --> API: Return Result
+API --> User: Return Result
+
+
+@enduml
