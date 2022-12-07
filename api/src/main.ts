@@ -3,6 +3,8 @@ import dotenv from "dotenv";
 import ConverterController from "./converter-controller";
 
 dotenv.config();
+dotenv.config({ path: `.env.local`, override: true });
+
 
 const converterController = new ConverterController();
 
