@@ -1,10 +1,10 @@
 import prisma from '../database/Client';
 
 export class UnitRepository {
-  private async getUnit(value: string, field: string) {
+  public async getUnitFromNameOrId(value: string) {
     const unit = await prisma.unit.findFirstOrThrow({
       where: {
-        [field]: value,
+        OR: [{ name: value }, { id: value }, { symbol: value }],
       },
       include: {
         aliases: true,
@@ -15,9 +15,6 @@ export class UnitRepository {
       },
     });
     return unit;
-  }
-  public async getUnitFromName(name: string) {
-    return this.getUnit(name, 'name');
   }
   public async listAllUnits(): Promise<string[]> {
     const units = await prisma.unit.findMany({
@@ -76,7 +73,7 @@ export class UnitRepository {
 
   public async createSubQuantityClass(className: string, unitIds: string[]): Promise<void> {
     // Check that all classes have the same quantity type
-    const units = await Promise.all(unitIds.map((id) => this.getUnit(id, 'id')));
+    const units = await Promise.all(unitIds.map((id) => this.getUnitFromNameOrId(id)));
     const allTypes = [units.map((unit) => unit.types.map((type) => type.name))].flat();
     const intersection = allTypes.reduce((a, b) => a.filter((c) => b.includes(c)));
 
