@@ -14,7 +14,7 @@ async function main() {
     const units = await repo.listAllUnits();
     // console.log(units);
 
-    const types = await repo.listQuantityClasses();
+    const types = await repo.listQuantityTypes();
     // console.log(types);
 
     const unitsForHeight = await repo.listUnitsForType('height');

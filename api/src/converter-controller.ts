@@ -10,13 +10,13 @@ export default class ConverterController {
     this._converter = new Converter();
   }
 
-  public async listUnitDimensions(req: Request, res: Response) {
+  public async listUnits(req: Request, res: Response) {
     console.log(this._repo);
     const list = await this._repo.listAllUnits();
     res.send(list);
   }
 
-  public async listQuantityClass(req: Request, res: Response) {
+  public async listQuantityTypes(req: Request, res: Response) {
     const list = await this._repo.listQuantityClasses();
     res.send(list);
   }

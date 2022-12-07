@@ -28,7 +28,7 @@ export class UnitRepository {
     return units.map((unit) => unit.name);
   }
 
-  public async listQuantityClasses(): Promise<string[]> {
+  public async listQuantityTypes(): Promise<string[]> {
     const types = await prisma.quantityType.findMany({
       select: {
         name: true,

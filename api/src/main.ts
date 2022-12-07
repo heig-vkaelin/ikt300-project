@@ -5,7 +5,6 @@ import ConverterController from "./converter-controller";
 dotenv.config();
 dotenv.config({ path: `.env.local`, override: true });
 
-
 const converterController = new ConverterController();
 
 const app = express();
@@ -14,15 +13,15 @@ app.get("/", (req: Request, res: Response) => {
   res.send("Running");
 });
 app.get(
-  "/api/list-dimensions",
-  converterController.listUnitDimensions.bind(converterController)
+  "/api/list-units",
+  converterController.listUnits.bind(converterController)
 );
 app.get(
-  "/api/list-quantity-class",
-  converterController.listQuantityClass.bind(converterController)
+  "/api/list-quantity-types",
+  converterController.listQuantityTypes.bind(converterController)
 );
 app.get(
-  "/api/list-unity-for-type",
+  "/api/list-units-for-type",
   converterController.listUnitsForType.bind(converterController)
 );
 app.get(
