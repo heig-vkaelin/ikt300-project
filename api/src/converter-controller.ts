@@ -16,7 +16,7 @@ export default class ConverterController {
   }
 
   public async listQuantityTypes(req: Request, res: Response) {
-    const list = await this._repo.listQuantityClasses();
+    const list = await this._repo.listQuantityTypes();
     res.send(list);
   }
 
