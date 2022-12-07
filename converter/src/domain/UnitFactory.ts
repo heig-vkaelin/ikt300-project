@@ -13,7 +13,7 @@ const DEFAULT_PARAMETERS = {
 class UnitFactory {
   public static async loadUnit(unitName: string): Promise<IUnit> {
     const repo = new UnitRepository();
-    const unit = await repo.getUnitFromName(unitName);
+    const unit = await repo.getUnitFromNameOrId(unitName);
 
     if (unit.baseUnitId) {
       return new CustomaryUnit(

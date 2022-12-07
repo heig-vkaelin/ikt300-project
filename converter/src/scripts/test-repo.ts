@@ -6,8 +6,10 @@ async function main() {
   try {
     const repo = new UnitRepository();
 
-    const darcy = await repo.getUnitFromName('darcy');
+    const darcy = await repo.getUnitFromNameOrId('darcy');
+    const darcyV2 = await repo.getUnitFromNameOrId('D');
     // console.log(darcy);
+    // console.log(darcyV2);
 
     const units = await repo.listAllUnits();
     // console.log(units);
