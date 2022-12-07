@@ -2,7 +2,9 @@
 
 package "Domain" {
   interface IUnit {
+    + id: string
     + name: string
+    + aliases: string[]
     + types: QuantityType[]
     + symbol: string
     + convertToBase(value: number): number
@@ -11,20 +13,19 @@ package "Domain" {
   class UnitFactory {
     + {static} loadUnit(name: string): IUnit
   }
-  class ConversionParameter {
-      # A: number
-      # B: number
-      # C: number
-      # D: number
+  class ConversionParameters {
+      # a: number
+      # b: number
+      # c: number
+      # d: number
   }
 
   class BaseUnit {
-      # description: string
   }
 
   class CustomaryUnit {
       # baseUnit: BaseUnit
-      # conversionParameter: ConversionParameter
+      # conversionParameters: ConversionParameters
   }
   class QuantityType {
       # name: string
@@ -38,7 +39,7 @@ package "Database" {
 BaseUnit -UP-|> IUnit
 CustomaryUnit -UP-|> IUnit
 CustomaryUnit "*" --> "1" BaseUnit
-CustomaryUnit "*" --* "1" ConversionParameter
+CustomaryUnit "*" --* "1" ConversionParameters
 IUnit "*" -RIGHT-> "*" QuantityType
 UnitFactory --> IUnit
 UnitFactory --> UnitRepository
