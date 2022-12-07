@@ -24,15 +24,15 @@ app.get("/", (_, res: Response) => {
   res.send("Running");
 });
 app.get(
-  "/api/list-dimensions",
-  errorWrapper(converterController.listUnitDimensions.bind(converterController))
+  "/api/list-units",
+  errorWrapper(converterController.listUnits.bind(converterController))
 );
 app.get(
-  "/api/list-quantity-class",
-  errorWrapper(converterController.listQuantityClass.bind(converterController))
+  "/api/list-quantity-types",
+  errorWrapper(converterController.listQuantityTypes.bind(converterController))
 );
 app.get(
-  "/api/list-unity-for-type",
+  "/api/list-units-for-type",
   errorWrapper(converterController.listUnitsForType.bind(converterController))
 );
 app.get(
